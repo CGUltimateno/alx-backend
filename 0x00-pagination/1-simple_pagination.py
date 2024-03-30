@@ -24,16 +24,22 @@ class Server:
     def dataset(self) -> List[List[str]]:
         """load the data from the csv file"""
         if self.__dataset is None:
-            with open(self.DATA_FILE, 'r', encoding='utf-8') as f:
+            with open(self.DATA_FILE) as f:
                 reader = csv.reader(f)
-                self.__dataset = [row for row in reader]
+                dataset = [row for row in reader]
+            self.__dataset = dataset[1:]
         return self.__dataset
 
-    def get_page(self, page: int = 1, page_size: int = 10) -> List[List[str]]:
+    def get_page(self, page: int = 1, page_size: int = 10) -> List[List]:
         """return the appropriate page of the dataset"""
         assert isinstance(page, int) and page > 0
         assert isinstance(page_size, int) and page_size > 0
+        start_index, end_index = index_range(page, page_size)
+        rows: List[List] = []
         self.dataset()
-        start, end = index_range(page, page_size)
-        return self.__dataset[start:end]
+        if start_index > len(self.__dataset) or \
+                end_index > len(self.__dataset):
+            return []
 
+        return ([self.__dataset[index] for index
+                in range(start_index, end_index)])

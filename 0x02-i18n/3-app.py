@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-A Basic Flask app
+A Basic Flask app with internationalization support
 """
 from flask import Flask, render_template, request
 from flask_babel import Babel
@@ -32,4 +32,4 @@ def hello_world() -> str:
 
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port="5000")
+    app.run(host="0.0.0.0", port=5000)
